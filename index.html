@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Open in T3 Code</title>
+<style>
+  body { font: 17px/1.5 system-ui, -apple-system, sans-serif; margin: 0; min-height: 100vh; display: grid; place-items: center; background: #161616; color: #f5f5f5; text-align: center; }
+  main { padding: 32px; max-width: 420px; }
+  a.button { display: inline-block; margin-top: 20px; padding: 14px 28px; border-radius: 12px; background: #818cf8; color: #000; font-weight: 600; text-decoration: none; }
+  p.small { margin-top: 24px; font-size: 14px; color: #a3a3a3; }
+  p.small a { color: #a3a3a3; }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title">Opening T3 Code…</h1>
+  <p id="text">If the app doesn't open, tap the button.</p>
+  <a class="button" id="open" href="#">Open in T3 Code</a>
+  <p class="small" id="web-line">No app? <a id="web" href="https://app.t3.codes/">Open in the browser</a></p>
+</main>
+<script>
+  // Turns https://allacher.github.io/t3-open/#<environmentId>/<threadId> into t3code://threads/<environmentId>/<threadId>.
+  // The IDs sit in the URL fragment, so they never reach the server. Only the fixed t3code://threads/ target is
+  // possible, and each ID must be a single percent-encoded path segment.
+  (function () {
+    var match = location.hash.match(/^#([\w%.-]+)\/([\w%.-]+)$/);
+    if (!match) {
+      document.getElementById("title").textContent = "Invalid link";
+      document.getElementById("text").textContent = "This page opens a T3 Code thread from a link like #<environment>/<thread>.";
+      document.getElementById("open").style.display = "none";
+      document.getElementById("web-line").style.display = "none";
+      return;
+    }
+    var path = match[1] + "/" + match[2];
+    var target = "t3code://threads/" + path;
+    document.getElementById("open").href = target;
+    document.getElementById("web").href = "https://app.t3.codes/" + path;
+    location.href = target;
+  })();
+</script>
+</body>
+</html>
